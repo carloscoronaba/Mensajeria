@@ -1,0 +1,51 @@
+pipeline {
+    agent any
+
+    environment {
+        // Definir variables de entorno si es necesario
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Clona el repositorio desde GitHub
+                git url: 'https://github.com/carloscoronaba/Mensajeria', branch: 'main'
+            }
+        }
+        stage('Build') {
+            steps {
+                // Ejemplo con Maven: Compila el proyecto
+                sh 'mvn clean install'
+            }
+        }
+        stage('Test') {
+            steps {
+                // Ejemplo con Maven: Ejecuta las pruebas
+                sh 'mvn test'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                // Aquí puedes agregar los pasos de despliegue
+                // Por ejemplo, copiar archivos, ejecutar scripts de despliegue, etc.
+                echo 'Deploying application...'
+            }
+        }
+    }
+
+    post {
+        always {
+            // Acciones a realizar siempre, independientemente del resultado
+            archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
+            junit 'target/surefire-reports/*.xml'
+        }
+        success {
+            // Acciones a realizar en caso de éxito
+            echo 'Pipeline succeeded!'
+        }
+        failure {
+            // Acciones a realizar en caso de fallo
+            echo 'Pipeline failed!'
+        }
+    }
+}
