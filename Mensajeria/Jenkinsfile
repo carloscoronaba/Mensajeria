@@ -2,6 +2,13 @@ pipeline {
     agent any
 
     stages {
+        stage("Clear WorkSpace"){
+            steps{
+                script{
+                    sh "rm -rf ./*"
+                }
+            }
+        }
         stage('Checkout') {
             steps {
                 // Clona el repositorio desde GitHub
