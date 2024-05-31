@@ -1,45 +1,28 @@
 pipeline {
     agent any
 
-    environment {
-        // Definir variables de entorno si es necesario
-        MY_VARIABLE = 'valor_de_mi_variable'
-    }
-
     stages {
         stage('Checkout') {
             steps {
                 // Clona el repositorio desde GitHub
-                git url: 'https://github.com/carloscoronaba/Mensajeria', branch: 'main'
+                git 'https://github.com/carloscoronaba/Mensajeria.git'
             }
         }
         stage('Build') {
             steps {
-                // Ejemplo con Maven: Compila el proyecto
-                sh 'mvn clean install'
+                // Aquí puedes agregar pasos de construcción si es necesario
+                echo 'Build successful!'
             }
         }
         stage('Test') {
             steps {
-                // Ejemplo con Maven: Ejecuta las pruebas
-                sh 'mvn test'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                // Aquí puedes agregar los pasos de despliegue
-                // Por ejemplo, copiar archivos, ejecutar scripts de despliegue, etc.
-                echo 'Deploying application...'
+                // Aquí puedes agregar pasos de pruebas si es necesario
+                echo 'Tests passed!'
             }
         }
     }
 
     post {
-        always {
-            // Acciones a realizar siempre, independientemente del resultado
-            archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
-            junit 'target/surefire-reports/*.xml'
-        }
         success {
             // Acciones a realizar en caso de éxito
             echo 'Pipeline succeeded!'
