@@ -2,17 +2,10 @@ pipeline {
     agent any
 
     stages {
-        stage("Clear WorkSpace"){
-            steps{
-                script{
-                    sh "rm -rf ./*"
-                }
-            }
-        }
         stage('Checkout') {
             steps {
                 // Clona el repositorio desde GitHub
-                git 'https://github.com/carloscoronaba/Mensajeria.git'
+                git url: 'https://github.com/carloscoronaba/Mensajeria', branch: 'main'
             }
         }
         stage('Build') {
